@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// Import the OpenZeppelin ERC20 implementation
+
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract MyToken is ERC20 {
     address public owner;
 
     constructor(uint256 initialSupply) ERC20("Yanaagi", "YAN") {
-        _mint(msg.sender, initialSupply * (10 ** uint256(decimals())));
+        _mint(msg.sender, initialSupply);
         owner = msg.sender;
     }
 
@@ -21,8 +21,12 @@ contract MyToken is ERC20 {
         _mint(to, value);
     }
 
-    // Allow anyone to burn tokens
     function burn(address from, uint256 value) external {
         _burn(from, value);
+    }
+
+    function transfer(address to, uint256 value) public override returns (bool) {
+        _transfer(msg.sender, to, value);
+        return true;
     }
 }
